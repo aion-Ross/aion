@@ -15,6 +15,10 @@ public class SecureTrie extends TrieImpl implements Trie {
         super(db, root);
     }
 
+    public SecureTrie(final Cache cache, Object root) {
+        super(cache, root);
+    }
+
     @Override
     public byte[] get(byte[] key) {
         return super.get(h256(key));

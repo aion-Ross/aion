@@ -19,7 +19,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -66,13 +65,13 @@ import org.aion.rlp.Value;
  * @since 20.05.2014
  */
 public class TrieImpl implements Trie {
-    private static byte PAIR_SIZE = 2;
-    private static byte LIST_SIZE = 17;
-    private static int MAX_SIZE = 20;
+    private static final byte PAIR_SIZE = 2;
+    private static final byte LIST_SIZE = 17;
+    private static final int MAX_SIZE = 20;
 
-    @Deprecated private Object prevRoot;
+    private Object prevRoot;
     private Object root;
-    private Cache cache;
+    private final Cache cache;
 
     private boolean pruningEnabled;
 
@@ -81,26 +80,17 @@ public class TrieImpl implements Trie {
     }
 
     public TrieImpl(IByteArrayKeyValueStore db, Object root) {
-        this.cache = new Cache(db);
+        this(new Cache(db), root);
+    }
+
+    public TrieImpl(final Cache cache, Object root) {
+        this.cache = cache;
         this.root = root;
         this.prevRoot = root;
     }
 
-    public TrieIterator getIterator() {
-        return new TrieIterator(this);
-    }
-
-    public void setCache(Cache cache) {
-        this.cache = cache;
-    }
-
     public Cache getCache() {
         return this.cache;
-    }
-
-    @Deprecated
-    public Object getPrevRoot() {
-        return prevRoot;
     }
 
     public Object getRoot() {
@@ -117,7 +107,7 @@ public class TrieImpl implements Trie {
         this.root = root;
     }
 
-    public void deserializeRoot(byte[] data) {
+    private void deserializeRoot(byte[] data) {
         synchronized (cache) {
             try {
                 ByteArrayInputStream b = new ByteArrayInputStream(data);
@@ -473,11 +463,9 @@ public class TrieImpl implements Trie {
     // Simple compare function which compares two tries based on their stateRoot
     @Override
     public boolean equals(Object trie) {
-        if (this == trie) {
-            return true;
-        }
-        return trie instanceof Trie
-                && Arrays.equals(this.getRootHash(), ((Trie) trie).getRootHash());
+        return this == trie
+                || trie instanceof Trie
+                        && Arrays.equals(this.getRootHash(), ((Trie) trie).getRootHash());
     }
 
     @Override
@@ -526,43 +514,39 @@ public class TrieImpl implements Trie {
         return slice;
     }
 
-    /**
-     * Insert/delete operations on a Trie structure leaves the old nodes in cache, this method scans
-     * the cache and removes them. The method is not thread safe, the tree should not be modified
-     * during the cleaning process.
-     */
-    public void cleanCache() {
-        synchronized (cache) {
-            CollectFullSetOfNodes collectAction = new CollectFullSetOfNodes();
+    // not used
+    //    /**
+    //     * Insert/delete operations on a Trie structure leaves the old nodes in cache, this method
+    //     * scans the cache and removes them. The method is not thread safe, the tree should not be
+    //     * modified during the cleaning process.
+    //     */
+    //    public void cleanCache() {
+    //        synchronized (cache) {
+    //            CollectFullSetOfNodes collectAction = new CollectFullSetOfNodes();
+    //
+    //            this.scanTree(this.getRootHash(), collectAction);
+    //
+    //            Set<ByteArrayWrapper> hashSet = collectAction.getCollectedHashes();
+    //            Map<ByteArrayWrapper, Node> nodes = this.getCache().getNodes();
+    //            Set<ByteArrayWrapper> toRemoveSet = new HashSet<>();
+    //
+    //            for (ByteArrayWrapper key : nodes.keySet()) {
+    //                if (!hashSet.contains(key)) {
+    //                    toRemoveSet.add(key);
+    //                }
+    //            }
+    //
+    //            for (ByteArrayWrapper key : toRemoveSet) {
+    //                this.getCache().delete(key.getData());
+    //                // if (LOG.isTraceEnabled()) {
+    //                // LOG.trace("Garbage collected node: [{}]",
+    //                // Hex.toHexString(key.getData()));
+    //                // }
+    //            }
+    //        }
+    //    }
 
-            this.scanTree(this.getRootHash(), collectAction);
-
-            Set<ByteArrayWrapper> hashSet = collectAction.getCollectedHashes();
-            Map<ByteArrayWrapper, Node> nodes = this.getCache().getNodes();
-            Set<ByteArrayWrapper> toRemoveSet = new HashSet<>();
-
-            for (ByteArrayWrapper key : nodes.keySet()) {
-                if (!hashSet.contains(key)) {
-                    toRemoveSet.add(key);
-                }
-            }
-
-            for (ByteArrayWrapper key : toRemoveSet) {
-                this.getCache().delete(key.getData());
-                // if (LOG.isTraceEnabled()) {
-                // LOG.trace("Garbage collected node: [{}]",
-                // Hex.toHexString(key.getData()));
-                // }
-            }
-        }
-    }
-
-    public void printFootPrint() {
-
-        this.getCache().getNodes();
-    }
-
-    public void scanTree(byte[] hash, ScanAction scanAction) {
+    private void scanTree(byte[] hash, ScanAction scanAction) {
         synchronized (cache) {
             Value node = this.getCache().get(hash);
             if (node == null) {
@@ -589,7 +573,7 @@ public class TrieImpl implements Trie {
         }
     }
 
-    public void scanTreeLoop(byte[] hash, ScanAction scanAction) {
+    private void scanTreeLoop(byte[] hash, ScanAction scanAction) {
 
         ArrayList<byte[]> hashes = new ArrayList<>();
         hashes.add(hash);
@@ -633,7 +617,7 @@ public class TrieImpl implements Trie {
      * @param scanAction action to perform on each node
      * @param db database containing keys that need not be explored
      */
-    public void scanTreeDiffLoop(
+    private void scanTreeDiffLoop(
             byte[] hash, ScanAction scanAction, IByteArrayKeyValueDatabase db) {
 
         ArrayList<byte[]> hashes = new ArrayList<>();
@@ -836,6 +820,7 @@ public class TrieImpl implements Trie {
         return "root: " + Hex.toHexString(stateRoot) + "\n" + traceAction.getOutput();
     }
 
+    @SuppressWarnings("unused")
     public Set<ByteArrayWrapper> getTrieKeys(byte[] stateRoot) {
         CollectFullSetOfNodes traceAction = new CollectFullSetOfNodes();
         traceTrie(stateRoot, traceAction);
@@ -862,16 +847,10 @@ public class TrieImpl implements Trie {
 
     public boolean validate() {
         synchronized (cache) {
-            final int[] cnt = new int[1];
             try {
-                scanTree(
-                        getRootHash(),
-                        new ScanAction() {
-                            @Override
-                            public void doOnNode(byte[] hash, Value node) {
-                                cnt[0]++;
-                            }
-                        });
+                // fails when a referenced node is not found
+                // indicating that the root is not valid
+                scanTreeLoop(getRootHash(), new CountNodes());
             } catch (Exception e) {
                 return false;
             }
