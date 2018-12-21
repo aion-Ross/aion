@@ -219,13 +219,21 @@ public class BridgeStorageConnector {
     }
 
     private void setWORD(@Nonnull final DataWord key, @Nonnull final DataWord word) {
-        this.track.addStorageRow(contractAddress, key.toWrapper(), word.toWrapper());
+        if (word.isZero()) {
+            this.track.removeStorageRow(contractAddress, key.toWrapper());
+        } else {
+            this.track.addStorageRow(contractAddress, key.toWrapper(), word.toWrapper());
+        }
     }
 
     private void setDWORD(@Nonnull final DataWord key, @Nonnull final byte[] dword) {
         assert dword.length > 16;
-        this.track.addStorageRow(
-                contractAddress, key.toWrapper(), new DoubleDataWord(dword).toWrapper());
+        DoubleDataWord word = new DoubleDataWord(dword);
+        if (word.isZero()) {
+            this.track.removeStorageRow(contractAddress, key.toWrapper());
+        } else {
+            this.track.addStorageRow(contractAddress, key.toWrapper(), word.toWrapper());
+        }
     }
 
     private byte[] getDWORD(@Nonnull final DataWord key) {
