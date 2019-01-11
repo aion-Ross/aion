@@ -199,7 +199,8 @@ public class TaskInbound implements Runnable {
         }
     }
 
-    private int readHeader(final ChannelBuffer _cb, final ByteBuffer _readBuf, int cnt) {
+    private int readHeader(final ChannelBuffer _cb, final ByteBuffer _readBuf, int cnt)
+        throws Exception {
 
         if (cnt < Header.LEN) {
             return cnt;
@@ -218,7 +219,7 @@ public class TaskInbound implements Runnable {
         return cnt - Header.LEN;
     }
 
-    private int readBody(final ChannelBuffer _cb, ByteBuffer _readBuf, int _cnt) {
+    private int readBody(final ChannelBuffer _cb, ByteBuffer _readBuf, int _cnt) throws Exception {
 
         int bodyLen = _cb.getHeader().getLen();
 
@@ -288,7 +289,7 @@ public class TaskInbound implements Runnable {
         _readBuf.rewind();
     }
 
-    private int readMsg(SelectionKey _sk, ByteBuffer _readBuf, int _cnt) throws IOException {
+    private int readMsg(SelectionKey _sk, ByteBuffer _readBuf, int _cnt) throws Exception {
         ChannelBuffer cb = (ChannelBuffer) _sk.attachment();
         if (cb == null) {
             throw new P2pException("attachment is null");

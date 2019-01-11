@@ -121,37 +121,22 @@ class ChannelBuffer {
         return routes.get(_route);
     }
 
-    void readHead(ByteBuffer buf) {
+    void readHead(ByteBuffer buf) throws Exception {
         if (buf.array().length < bsHead.length) {
-            if (p2pLOG.isDebugEnabled()) {
-                p2pLOG.debug("ChannelBuffer readHead short buffer size");
-            }
-            return;
+            throw new Exception("ChannelBuffer readHead short buffer size");
         }
 
         buf.get(bsHead);
-        try {
-            header = Header.decode(bsHead);
-        } catch (IllegalArgumentException | IndexOutOfBoundsException e) {
-            if (p2pLOG.isDebugEnabled()) {
-                p2pLOG.debug("ChannelBuffer readHead exception.", e);
-            }
-        }
+        header = Header.decode(bsHead);
     }
 
-    void readBody(ByteBuffer buf) {
+    void readBody(ByteBuffer buf) throws Exception {
         if (isHeaderNotCompleted()) {
-            if (p2pLOG.isDebugEnabled()) {
-                p2pLOG.debug("ChannelBuffer readBody no header.");
-            }
-            return;
+            throw new Exception("ChannelBuffer readBody has no header.");
         }
 
         if (buf.array().length < header.getLen()) {
-            if (p2pLOG.isDebugEnabled()) {
-                p2pLOG.debug("ChannelBuffer readBody short buffer size.");
-            }
-            return;
+            throw new Exception("ChannelBuffer readBody short buffer size.");
         }
 
         body = new byte[header.getLen()];

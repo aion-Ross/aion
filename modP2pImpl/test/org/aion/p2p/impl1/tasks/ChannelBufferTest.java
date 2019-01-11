@@ -117,7 +117,7 @@ public class ChannelBufferTest {
     }
 
     @Test
-    public void testReadHead() {
+    public void testReadHead() throws Exception {
         for (int i = 0; i < 100; i++) {
             cb.refreshHeader();
             ByteBuffer bb = genBuffer();
@@ -148,7 +148,7 @@ public class ChannelBufferTest {
     }
 
     @Test
-    public void testReadBody() {
+    public void testReadBody() throws Exception {
         for (int i = 0; i < 100; i++) {
             cb.refreshHeader();
             cb.refreshBody();
@@ -166,7 +166,7 @@ public class ChannelBufferTest {
     }
 
     @Test
-    public void testReadBodyNotCompleted() {
+    public void testReadBodyNotCompleted() throws Exception {
         ByteBuffer bb = genBuffer();
         cb.readBody(bb);
         assertNull(cb.body);
