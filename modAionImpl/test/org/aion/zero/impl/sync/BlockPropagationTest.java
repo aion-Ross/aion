@@ -303,6 +303,8 @@ public class BlockPropagationTest {
         Map<Integer, INode> node = new HashMap<>();
         node.put(1, senderMock);
 
+        SyncStats syncStats = new SyncStats(block.getNumber());
+
         P2pMock p2pMock =
                 new P2pMock(node) {
                     @Override
@@ -321,6 +323,7 @@ public class BlockPropagationTest {
                 new BlockPropagationHandler(
                         1024,
                         anotherBundle.bc, // NOTE: not the same blockchain that generated the block
+                        syncStats,
                         p2pMock,
                         anotherBundle.bc.getBlockHeaderValidator(),
                         false);
@@ -378,11 +381,12 @@ public class BlockPropagationTest {
 
         AionBlock bestBlock = bundle.bc.getBestBlock();
         assertThat(bestBlock.getHash()).isEqualTo(anotherBundle.bc.genesis.getHash());
-
+        SyncStats syncStats =  new SyncStats(bestBlock.getNumber());
         BlockPropagationHandler handler =
                 new BlockPropagationHandler(
                         1024,
                         anotherBundle.bc, // NOTE: not the same blockchain that generated the block
+                        syncStats,
                         p2pMock,
                         anotherBundle.bc.getBlockHeaderValidator(),
                         false);
@@ -437,10 +441,12 @@ public class BlockPropagationTest {
 
         assertThat(bundle.bc.genesis.getHash()).isEqualTo(anotherBundle.bc.genesis.getHash());
 
+        SyncStats syncStats =  new SyncStats(bundle.bc.getBestBlock().getNumber());
         BlockPropagationHandler handler =
                 new BlockPropagationHandler(
                         1024,
                         anotherBundle.bc, // NOTE: not the same blockchain that generated the block
+                        syncStats,
                         p2pMock,
                         anotherBundle.bc.getBlockHeaderValidator(),
                         false);
@@ -489,10 +495,12 @@ public class BlockPropagationTest {
                         .withDefaultAccounts(accounts)
                         .build();
 
+        SyncStats syncStats =  new SyncStats(bundle.bc.getBestBlock().getNumber());
         BlockPropagationHandler handler =
                 new BlockPropagationHandler(
                         1024,
                         anotherBundle.bc, // NOTE: not the same blockchain that generated the block
+                        syncStats,
                         p2pMock,
                         anotherBundle.bc.getBlockHeaderValidator(),
                         false);
