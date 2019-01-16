@@ -361,8 +361,8 @@ public class ApiAion0Test {
                         + //
                         "}";
 
-        Message.req_compileSolidity reqBody =
-                Message.req_compileSolidity.newBuilder().setSource(contract).build();
+        Message.req_compile reqBody =
+                Message.req_compile.newBuilder().setCode(contract).build();
 
         rsp =
                 sendRequest(
@@ -379,8 +379,8 @@ public class ApiAion0Test {
 
     @Test
     public void testProcessCompileFail() {
-        Message.req_compileSolidity reqBody =
-                Message.req_compileSolidity.newBuilder().setSource("This should fail").build();
+        Message.req_compile reqBody =
+                Message.req_compile.newBuilder().setCode("This should fail").build();
 
         rsp =
                 sendRequest(
