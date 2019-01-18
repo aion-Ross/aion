@@ -54,11 +54,11 @@ public class A0BlockHeaderVersion {
     }
 
     public static String activeVersions() {
-        String toReturn = "{";
+        StringBuilder toReturn = new StringBuilder("{");
 
         Iterator<Byte> it = active.iterator();
         while (it.hasNext()) {
-            toReturn += it.next();
+            toReturn.append(it.next());
         }
 
         return toReturn + "}";

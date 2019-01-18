@@ -337,68 +337,58 @@ public class A0BlockHeader extends AbstractBlockHeader implements IPowBlockHeade
     }
 
     private String toStringWithSuffix(final String suffix) {
-        StringBuilder toStringBuff = new StringBuilder();
-        toStringBuff
-                .append("  hash=")
-                .append(toHexString(getHash()))
-                .append("  Length: ")
-                .append(getHash().length)
-                .append(suffix);
-        toStringBuff
-                .append("  version=")
-                .append(Integer.toHexString(version))
-                .append("  Length: ")
-                .append(suffix);
-        toStringBuff.append("  number=").append(number).append(suffix);
-        toStringBuff
-                .append("  parentHash=")
-                .append(toHexString(parentHash))
-                .append("  parentHash: ")
-                .append(parentHash.length)
-                .append(suffix);
-        toStringBuff
-                .append("  coinbase=")
-                .append(coinbase.toString())
-                .append("  coinBase: ")
-                .append(coinbase.toBytes().length)
-                .append(suffix);
-        toStringBuff
-                .append("  stateRoot=")
-                .append(toHexString(stateRoot))
-                .append("  stateRoot: ")
-                .append(stateRoot.length)
-                .append(suffix);
-        toStringBuff
-                .append("  txTrieHash=")
-                .append(toHexString(txTrieRoot))
-                .append("  txTrieRoot: ")
-                .append(txTrieRoot.length)
-                .append(suffix);
-        toStringBuff
-                .append("  receiptsTrieHash=")
-                .append(toHexString(receiptTrieRoot))
-                .append("  receiptTrieRoot: ")
-                .append(receiptTrieRoot.length)
-                .append(suffix);
-        toStringBuff
-                .append("  difficulty=")
-                .append(toHexString(difficulty))
-                .append("  difficulty: ")
-                .append(difficulty.length)
-                .append(suffix);
-        toStringBuff.append("  energyConsumed=").append(energyConsumed).append(suffix);
-        toStringBuff.append("  energyLimit=").append(energyLimit).append(suffix);
-        toStringBuff.append("  extraData=").append(toHexString(extraData)).append(suffix);
-        toStringBuff
-                .append("  timestamp=")
-                .append(timestamp)
-                .append(" (")
-                .append(Utils.longToDateTime(timestamp))
-                .append(")")
-                .append(suffix);
-        toStringBuff.append("  nonce=").append(toHexString(nonce)).append(suffix);
-        toStringBuff.append("  solution=").append(toHexString(solution)).append(suffix);
-        return toStringBuff.toString();
+        String toStringBuff = "  hash="
+            + toHexString(getHash())
+            + "  Length: "
+            + getHash().length
+            + suffix
+            + "  version="
+            + Integer.toHexString(version)
+            + "  Length: "
+            + suffix
+            + "  number=" + number + suffix
+            + "  parentHash="
+            + toHexString(parentHash)
+            + "  parentHash: "
+            + parentHash.length
+            + suffix
+            + "  coinbase="
+            + coinbase.toString()
+            + "  coinBase: "
+            + coinbase.toBytes().length
+            + suffix
+            + "  stateRoot="
+            + toHexString(stateRoot)
+            + "  stateRoot: "
+            + stateRoot.length
+            + suffix
+            + "  txTrieHash="
+            + toHexString(txTrieRoot)
+            + "  txTrieRoot: "
+            + txTrieRoot.length
+            + suffix
+            + "  receiptsTrieHash="
+            + toHexString(receiptTrieRoot)
+            + "  receiptTrieRoot: "
+            + receiptTrieRoot.length
+            + suffix
+            + "  difficulty="
+            + toHexString(difficulty)
+            + "  difficulty: "
+            + difficulty.length
+            + suffix
+            + "  energyConsumed=" + energyConsumed + suffix
+            + "  energyLimit=" + energyLimit + suffix
+            + "  extraData=" + toHexString(extraData) + suffix
+            + "  timestamp="
+            + timestamp
+            + " ("
+            + Utils.longToDateTime(timestamp)
+            + ")"
+            + suffix
+            + "  nonce=" + toHexString(nonce) + suffix
+            + "  solution=" + toHexString(solution) + suffix;
+        return toStringBuff;
     }
 
     public String toFlatString() {

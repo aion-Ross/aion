@@ -88,11 +88,7 @@ public class TransactionResult extends AbstractExecutionResult {
      * @return
      */
     public List<Address> getDeleteAccounts() {
-        List<Address> result = new ArrayList<>();
-        for (Address acc : deleteAccounts) {
-            result.add(acc);
-        }
-        return result;
+        return new ArrayList<>(deleteAccounts);
     }
 
     /**

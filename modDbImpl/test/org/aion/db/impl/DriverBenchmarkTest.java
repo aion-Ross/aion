@@ -513,10 +513,10 @@ public class DriverBenchmarkTest {
                 (((keySizeBytes + valueSizeBytes * (float) compressionRatio) * (float) keyCount)
                         / (1024F * 1024F)));
 
-        System.out.printf("------------------------------------------------\n\n");
+        System.out.print("------------------------------------------------\n\n");
 
-        System.out.printf(
-                "db, benchmark, keyCount, valueSizeBytes, batchSizeBytes, elapsed_s, opCount, disk_mb, raw_mb\n");
+        System.out.print(
+            "db, benchmark, keyCount, valueSizeBytes, batchSizeBytes, elapsed_s, opCount, disk_mb, raw_mb\n");
     }
 
     private static void printEnvironment() {

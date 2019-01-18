@@ -56,22 +56,19 @@ public class RLPDump {
     }
 
     public static String dump(RLPElement el, int indent) {
-        String ret = "";
+        StringBuilder ret = new StringBuilder();
         if (el instanceof RLPList) {
-            ret = repeat("  ", indent) + "[\n";
+            ret = new StringBuilder(repeat("  ", indent) + "[\n");
             for (RLPElement element : ((RLPList) el)) {
-                ret += dump(element, indent + 1);
+                ret.append(dump(element, indent + 1));
             }
-            ret += repeat("  ", indent) + "]\n";
+            ret.append(repeat("  ", indent)).append("]\n");
         } else {
-            ret +=
-                    repeat("  ", indent)
-                            + (el.getRLPData() == null
-                                    ? "<null>"
-                                    : Hex.toHexString(el.getRLPData()))
-                            + "\n";
+            ret.append(repeat("  ", indent)).append(el.getRLPData() == null
+                ? "<null>"
+                : Hex.toHexString(el.getRLPData())).append("\n");
         }
-        return ret;
+        return ret.toString();
     }
 
     public static String repeat(String s, int n) {
