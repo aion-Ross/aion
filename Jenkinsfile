@@ -15,16 +15,12 @@ node {
     }
 
 	stage('Build') {
-		steps {
-			
-			// Build steps
-			sh "git submodule init" 
+		// Build steps
+		sh "git submodule init" 
 
-			sh "git submodule update --init --recursive"
+		sh "git submodule update --init --recursive"
 
-			sh "./gradlew build pack"
-		}
-		
+		sh "./gradlew build pack"	
 	}
 
 	stage('Create Image') {
