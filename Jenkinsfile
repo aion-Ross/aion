@@ -4,12 +4,15 @@ properties([[$class: 'jenkins.model.BuildDiscarderProperty', strategy:
 			]])
 			
 node {
-    agent any
-
 	def app
     def project = 'trusty-drive-228822'
 	def appName = 'aion'
     def imageTag = "gcr.io/${project}/${appName}"
+
+    stage('Clone repository') {
+        /* Let's make sure we have the repository cloned to our workspace */
+        checkout scm
+    }
 
 	stage('Build') {
 		steps {
