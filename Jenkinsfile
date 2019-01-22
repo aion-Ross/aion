@@ -27,13 +27,25 @@ node {
 		// Copy to k8s folder to create image
 		sh "cp pack/aion.tar.bz2 k8s/aion.tar.bz2"
 
-		app = docker.build("gcr.io/${project}/${appName}")
+		app = docker.build("gcr.io/${project}/${appName}", "k8s")
 
 	}
 
 	stage('Cleanup') {
 		//Clean up duplicate files required during the build process
 		sh "rm k8s/aion.tar.bz2"
+	}
+
+	stage('Push Image') {
+
+		/*Push image with 2 tags (cheap since all layers are duplicated on 2nd push)
+		*/
+
+        docker.withRegistry('https://gcr.io/trusty-drive-228822/', 'gcr:trusty-drive-228822') {
+            
+            app.push("${env.BUILD_NUMBER}")
+            app.push("latest")
+        }
 	}
 
 	/*
@@ -60,13 +72,4 @@ node {
 	//     	}
 	// }
 
-
-
-
-    post {
-		always {
-				cleanWs()
-		}
-    }
-    
 }
