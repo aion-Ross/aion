@@ -67,3 +67,6 @@ tmp/
 # openjdk artifacts
 openjdk*.tar.gz
 openjfx*.zip
+
+# Kubernetes builds
+/k8s/*.tar.bz2
