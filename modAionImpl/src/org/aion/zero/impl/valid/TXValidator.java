@@ -1,5 +1,7 @@
 package org.aion.zero.impl.valid;
 
+import static org.aion.mcf.valid.TransactionTypeRule.isValidAVMTransactionType;
+import static org.aion.mcf.valid.TransactionTypeRule.isValidFVMTransactionType;
 import static org.aion.mcf.valid.TxNrgRule.isValidNrgContractCreate;
 import static org.aion.mcf.valid.TxNrgRule.isValidNrgTx;
 
@@ -11,6 +13,7 @@ import org.aion.crypto.ISignature;
 import org.aion.crypto.SignatureFac;
 import org.aion.log.LogEnum;
 import org.aion.mcf.vm.types.DataWord;
+import org.aion.zero.impl.config.CfgAion;
 import org.aion.zero.types.AionTransaction;
 import org.apache.commons.collections4.map.LRUMap;
 import org.slf4j.Logger;
@@ -19,6 +22,7 @@ import org.slf4j.LoggerFactory;
 public class TXValidator {
 
     private static final Logger LOG = LoggerFactory.getLogger(LogEnum.TX.name());
+    private static final boolean avmEnabled = CfgAion.inst().getVm().isAvmEnabled();
 
     private static final Map<ByteArrayWrapper, Boolean> cache =
             Collections.synchronizedMap(new LRUMap<>(128 * 1024));
@@ -91,6 +95,14 @@ public class TXValidator {
         ISignature sig = tx.getSignature();
         if (sig == null) {
             LOG.error("invalid tx signature!");
+            return false;
+        }
+
+        // verify transaction type
+        byte type = tx.getTransactionType();
+        // the type must be either valid for the FVM
+        // or for the AVM when the AVM is enabled
+        if (!isValidFVMTransactionType(type) && (!avmEnabled || !isValidAVMTransactionType(type))) {
             return false;
         }
 
