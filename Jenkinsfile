@@ -5,6 +5,12 @@ properties([[$class: 'jenkins.model.BuildDiscarderProperty', strategy:
 			
 pipeline {
     agent any
+
+	def app
+    def project = 'trusty-drive-228822'
+	def appName = 'aion'
+    def imageTag = "gcr.io/${project}/${appName}"
+
     stages {
         stage('Build') {
             steps {
@@ -15,15 +21,21 @@ pipeline {
                 sh "git submodule update --init --recursive"
 
                 sh "./gradlew build pack"
-
-				// Copy to k8s folder to create image
-				sh "cp pack/aion.tar.bz2 k8s/aion.tar.bz2"
             }
             
         }
 
-		stage('Package') {
+		stage('Create Image') {
+			// Copy to k8s folder to create image
+			sh "cp pack/aion.tar.bz2 k8s/aion.tar.bz2"
 
+			app = docker.build("gcr.io/${project}/${appName}")
+
+		}
+
+		stage('Cleanup') {
+			//Clean up duplicate files required during the build process
+			sh "rm k8s/aion.tar.bz2"
 		}
 
 		/*
