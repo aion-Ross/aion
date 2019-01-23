@@ -5,9 +5,9 @@ metadata:
 spec: 
   replicas: 1
   progressDeadlineSeconds: 60
-  namespace: ci-deployment
   template: 
-    metadata: 
+    metadata:
+      namespace: ci-deployment
       labels: 
         app: aion-node
       name: aion-node
