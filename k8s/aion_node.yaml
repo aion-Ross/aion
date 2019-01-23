@@ -5,6 +5,7 @@ metadata:
 spec: 
   replicas: 1
   progressDeadlineSeconds: 60
+  namespace: ci-deployment
   template: 
     metadata: 
       labels: 
@@ -20,8 +21,3 @@ spec:
             - 
               containerPort: 8545
               name: aion-node
-          resources: 
-            limits: 
-              memory: 3Gi
-            requests:
-              memory: 1Gi
