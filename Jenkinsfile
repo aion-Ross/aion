@@ -48,6 +48,11 @@ node {
         }
 	}
 
+	stage('Deploy Pdd') {
+		sh("sed -i.bak 's#gcr.io/trusty-drive-228822/aion:1.0.0#gcr.io/trusty-drive-228822/aion:${env.BUILD_NUMBER}#' ./k8s/*.yaml")
+        sh("kubectl apply -f k8s/")
+	}
+
 	/*
 	stage('Archive build output') {
 		when {

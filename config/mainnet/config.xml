@@ -1,23 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <aion>
 	<mode>aion</mode>
-	<id>[NODE-ID-PLACEHOLDER]</id>
+	<id>dfe33cce-6f61-4c75-b2cc-053c92b9ce7b</id>
 	<api>
-		<!-- rpc config docs: https://github.com/aionnetwork/aion/wiki/JSON-RPC-API-Docs -->
+		<!--rpc config docs: https://github.com/aionnetwork/aion/wiki/JSON-RPC-API-Docs-->
 		<rpc active="false" ip="127.0.0.1" port="8545">
 			<cors-enabled>false</cors-enabled>
 			<!--comma-separated list, APIs available: web3,net,debug,personal,eth,stratum-->
 			<apis-enabled>web3,eth,personal,stratum,ops</apis-enabled>
 		</rpc>
-                <java active="false" ip="127.0.0.1" port="8547">
-                        <secure-connect>true</secure-connect>
-                </java>
-
+		<java active="false" ip="127.0.0.1" port="8547">
+			<secure-connect>true</secure-connect>
+		</java>
 		<nrg-recommendation>
 			<!--default NRG price used by api if oracle disabled, minimum price recommended by oracle-->
-			<default>10E9</default>
+			<default>10000000000</default>
 			<!--max NRG price recommended by oracle-->
-			<max>100E9</max>
+			<max>100000000000</max>
 			<!--enable/diable nrg-oracle service. if disabled, api returns default NRG price if asked for nrgPrice-->
 			<oracle-enabled>false</oracle-enabled>
 		</nrg-recommendation>
@@ -36,13 +35,12 @@
 			<ip>0.0.0.0</ip>
 			<port>30303</port>
 			<discover>false</discover>
+			<max-temp-nodes>128</max-temp-nodes>
 			<max-active-nodes>128</max-active-nodes>
 		</p2p>
 	</net>
 	<sync>
-		<!-- Downloaded blocks queue limit. This affects memory footprint -->
 		<blocks-queue-max>32</blocks-queue-max>
-		<!-- Display syncing status -->
 		<show-status>false</show-status>
 		<!--requires show-status=true; comma separated list of options: [all, peer_states, requests, seeds, leeches, responses, none]-->
 		<show-statistics>none</show-statistics>
@@ -53,9 +51,6 @@
 		<cpu-mine-threads>2</cpu-mine-threads>
 		<extra-data>AION</extra-data>
 		<nrg-strategy>
-			<!-- <monotonic-increase></monotonic-increase> -->
-			<!-- <decaying></decaying> -->
-			<!-- <targetted target="10000000"></targetted> -->
 			<clamped-decay upper-bound="20000000" lower-bound="15000000"></clamped-decay>
 		</nrg-strategy>
 	</consensus>
@@ -76,30 +71,21 @@
 		<enable_db_compression>false</enable_db_compression>
 	</db>
 	<log>
-		<!--Enable/Disable logback service; if disabled, output will not be logged -->
+		<!--Enable/Disable logback service; if disabled, output will not be logged.-->
 		<log-file>true</log-file>
 		<!--Sets the physical location on disk where log files will be stored.-->
 		<log-path>log</log-path>
-		<ROOT>WARN</ROOT>
 		<GEN>INFO</GEN>
+		<ROOT>WARN</ROOT>
 		<VM>ERROR</VM>
-		<SYNC>INFO</SYNC>
-		<CONS>INFO</CONS>
-		<DB>WARN</DB>
-		<API>INFO</API>
-		<P2P>INFO</P2P>
 		<GUI>INFO</GUI>
+		<API>INFO</API>
+		<SYNC>INFO</SYNC>
+		<DB>WARN</DB>
+		<CONS>INFO</CONS>
+		<P2P>INFO</P2P>
 	</log>
-	<gui>
-		<launcher>
-			<!--Whether JVM settings for launching kernel should be autodetected; 'true' or 'false'-->
-			<autodetect>true</autodetect>
-			<!--Path to JAVA_HOME.  This field has no effect if autodetect is true.-->
-			<java-home>aion.sh</java-home>
-			<!--Working directory of kernel process.  This field has no effect if autodetect is true.-->
-			<working-dir>/placeholder/for/aion_root_dir</working-dir>
-			<!--Filename of aion launcher script, relative to working-dir.  This field has no effect if autodetect is true.-->
-			<aion-sh></aion-sh>
-		</launcher>
-	</gui>
+	<tx>
+		<cacheMax>256</cacheMax>
+	</tx>
 </aion>
