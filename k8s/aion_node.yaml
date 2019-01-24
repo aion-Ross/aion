@@ -16,7 +16,7 @@ spec:
     spec: 
       containers: 
         - 
-          image: "gcr.io/trusty-drive-228822/aion:15"
+          image: "gcr.io/trusty-drive-228822/aion:1.0.0"
           imagePullPolicy: Always
           name: aion
           ports: 
