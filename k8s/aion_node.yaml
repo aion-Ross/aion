@@ -4,6 +4,8 @@ metadata:
   name: aion-node
 spec: 
   replicas: 1
+  strategy:
+    type: Recreate
   progressDeadlineSeconds: 60
   template: 
     metadata:
@@ -14,7 +16,7 @@ spec:
     spec: 
       containers: 
         - 
-          image: "gcr.io/trusty-drive-228822/aion:1.0.0"
+          image: "gcr.io/trusty-drive-228822/aion:15"
           imagePullPolicy: Always
           name: aion
           ports: 
