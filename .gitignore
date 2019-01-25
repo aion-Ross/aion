@@ -70,3 +70,4 @@ openjfx*.zip
 
 # Kubernetes builds
 /k8s/*.tar.bz2
+/k8s/venv
