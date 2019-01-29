@@ -128,8 +128,9 @@ def main(image):
         update(dep, image)
 
 if __name__ == '__main__':
-    
-    if ~load_credentials():
+
+    if not load_credentials():
+        print("Unable to load credentials")
         sys.exit(1)
 
     image = ""
