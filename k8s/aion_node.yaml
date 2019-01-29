@@ -11,15 +11,15 @@ spec:
     metadata:
       namespace: ci-deployment
       labels: 
-        app: aion-node
-      name: aion-node
+        app: aion-node-a
+      name: aion-node-b
     spec: 
       containers: 
         - 
-          image: "gcr.io/trusty-drive-228822/aion:19"
+          image: "gcr.io/trusty-drive-228822/aion:latest"
           imagePullPolicy: Always
           name: aion
           ports: 
             - 
               containerPort: 8545
-              name: aion-node
+              name: aion-node-d
