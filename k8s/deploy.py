@@ -33,9 +33,9 @@ def deploy(num, image):
         dep = yaml.safe_load(f)
         k8s_beta = client.ExtensionsV1beta1Api()
         
-        # Modify name to next in sequence
-        # Use latest tag for image; don't need to re-write it
+        # Modify name and label to next in sequence
         dep["metadata"]["name"]="aion-" + str(num)
+        dep["spec"]["template"]["metadata"]["labels"]["app"] = "aion-" + str(num)
 
         update_image(dep, image)
 
@@ -82,10 +82,11 @@ def update(deployments, image):
         k8s_beta = client.ExtensionsV1beta1Api()
         
         to_update = "-".join((oldest_deployed.metadata.name).split('-')[0:2])
-
         dep["metadata"]["name"]=to_update
 
         update_image(dep, image)
+
+        dep["spec"]["template"]["metadata"]["labels"]["app"] = "aion-" + str(num)
 
         # Use latest tag for image; don't need to re-write it
         try:
