@@ -49,6 +49,10 @@ node {
 	}
 
 	stage("Deploy Image") {
+		
+		// Refresh kubectl (Python can have some issues refreshing)
+		sh('kubectl get nodes')
+
         withPythonEnv('python3') {
             sh 'pip install -r k8s/requirements.txt'
             sh "python k8s/deploy.py ${env.BUILD_NUMBER}"
