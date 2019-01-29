@@ -10,14 +10,16 @@ max_num_deploy = 2
 namespace = "default"
 
 def load_credentials():
-    for i in range(1,3):
+    for i in range(1,4):
         print("Attempt: " + str(i))
         try:
             config.load_kube_config()
-            return
+            return True
         except DefaultCredentialsError as e:
             print("Unable to load credentials, waiting 10s and retrying")
             time.sleep(10)
+    
+    return False
 
 def update_image(configuration, image):
     
@@ -126,7 +128,9 @@ def main(image):
         update(dep, image)
 
 if __name__ == '__main__':
-    load_credentials()
+    
+    if ~load_credentials():
+        sys.exit(1)
 
     image = ""
 
