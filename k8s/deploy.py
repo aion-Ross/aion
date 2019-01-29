@@ -4,12 +4,20 @@ from google.auth.exceptions import DefaultCredentialsError
 from os import path
 import yaml
 import sys
-
-
-config.load_kube_config()
+import time
 
 max_num_deploy = 2
 namespace = "default"
+
+def load_credentials():
+    for i in range(1,3):
+        print("Attempt: " + str(i))
+        try:
+            config.load_kube_config()
+            return
+        except DefaultCredentialsError as e:
+            print("Unable to load credentials, waiting 10s and retrying")
+            time.sleep(10)
 
 def update_image(configuration, image):
     
@@ -118,6 +126,7 @@ def main(image):
         update(dep, image)
 
 if __name__ == '__main__':
+    load_credentials()
 
     image = ""
 
