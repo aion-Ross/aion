@@ -34,3 +34,4 @@ RUN ls -a
 
 # Start aion on image start
 CMD ["/aion/aion.sh", "-n", "custom"]
+

@@ -4,7 +4,7 @@
 	<id>38cb8a0e-018d-4f00-8307-88af2e4c52e2</id>
 	<api>
 		<!--rpc config docs: https://github.com/aionnetwork/aion/wiki/JSON-RPC-API-Docs-->
-		<rpc active="false" ip="127.0.0.1" port="8545">
+		<rpc active="true" ip="127.0.0.1" port="8545">
 			<cors-enabled>false</cors-enabled>
 			<!--comma-separated list, APIs available: web3,net,debug,personal,eth,stratum-->
 			<apis-enabled>web3,eth,personal,stratum</apis-enabled>
