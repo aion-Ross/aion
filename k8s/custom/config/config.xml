@@ -76,7 +76,7 @@
 		<SYNC>INFO</SYNC>
 		<DB>WARN</DB>
 		<CONS>INFO</CONS>
-		<P2P>INFO</P2P>
+		<P2P>DEBUG</P2P>
 	</log>
 	<tx>
 		<cacheMax>256</cacheMax>

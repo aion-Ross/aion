@@ -34,4 +34,3 @@ ENV LC_ALL C.UTF-8
 
 # Start aion on image start
 CMD ["/aion/aion.sh", "-n", "custom"]
-
