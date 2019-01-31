@@ -22,7 +22,7 @@
 		</nrg-recommendation>
 	</api>
 	<net>
-		<id>0</id>
+		<id>1</id>
 		<nodes>
                         <node>p2p://e0f2e565-59d5-4a31-ace7-5fa8c87da7ab@35.245.69.208:30303</node>
 		</nodes>
