@@ -7,7 +7,6 @@ node {
 	def app
     def project = 'trusty-drive-228822'
 	def appName = 'aion'
-    def imageTag = "azurecr.io/${appName}"
 
     stage('Clone repository') {
         /* Let's make sure we have the repository cloned to our workspace */
@@ -28,7 +27,7 @@ node {
 		// Copy to k8s folder to create image
 		sh "cp pack/aion.tar.bz2 k8s/aion.tar.bz2"
 
-		app = docker.build("azurecr.io/${appName}", "k8s")
+		app = docker.build("${appName}", "k8s")
 
 	}
 
