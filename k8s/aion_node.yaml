@@ -16,7 +16,7 @@ spec:
     spec: 
       containers: 
         - 
-          image: "gcr.io/trusty-drive-228822/aion:latest"
+          image: "aionkuberacr.azurecr.io/aion:latest"
           imagePullPolicy: Always
           name: aion
           ports: 
