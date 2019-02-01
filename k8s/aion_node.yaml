@@ -16,7 +16,7 @@ spec:
     spec: 
       containers: 
         - 
-          image: "aionkuberacr.azurecr.io/aion:latest"
+          image: "azurecr.io/aion:latest"
           imagePullPolicy: Always
           name: aion
           ports: 
